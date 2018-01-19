@@ -1,0 +1,18 @@
+{
+  "name": "11_constructor_hangman",
+  "version": "1.0.0",
+  "description": "cli hangman game",
+  "main": "app.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": [
+    "node",
+    "hangman"
+  ],
+  "author": "Katy Cassidy",
+  "license": "ISC",
+  "dependencies": {
+    "inquirer": "^5.0.0"
+  }
+}
