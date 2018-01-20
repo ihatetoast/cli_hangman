@@ -5,7 +5,7 @@ function Letter(char) {
   this.char = char;
   this.blank = '_';
   this.printLetter = function(char){
-    console.log(`printLetter called with char ${char}`);
+    console.log(`printLetter called with char ${char} from ./letter.js`);
   }
 }
 
