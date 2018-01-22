@@ -1,12 +1,31 @@
 const request = require('request');
 
-const wordArr = ['game', 'dog', 'cat','horse', 'emotion', 'programming','texas', 'australia', 'sport', 'art', 'literature', 'monkey'];
-
-//generates a wordbank. right now hard coded
-function WordBank(theme){
-  this.fillBank = function(){
+var theme;
+const GameWord = function(){
+//to become method to get theme
+  this.getTheme = function(){
+    inquirer
+      .prompt(
+        {
+          type: 'list',
+          name: 'theme',
+          message: 'What theme do you want?',
+          choices: wordArr,
+          filter: function(val) {
+            return val.toLowerCase();
+          }
+        }
+      )
+      .then(function(answer){
+        theme = answer.theme;
+        console.log(`returned theme is ${theme}`);
+      })
+  },
+  this.fillBank = function(theme){
+    console.log("got this far");
+    this.theme = theme;
     var bank = []
-    var urlDatamuseApi = `https://api.datamuse.com/words?rel_trg=${theme}`
+    var urlDatamuseApi = `https://api.datamuse.com/words?rel_trg=${this.theme}`
     request(`${urlDatamuseApi}`, function (err, res, body) {
       if(err) throw err;
       let bodyJSON = JSON.parse(body);//because body is a string
@@ -23,15 +42,7 @@ function WordBank(theme){
         console.log(`bank is ${bank}`);
       }, 1500);
     });
-   
   }
 }
 
-//get one word from 
-// var newWordbank = new WordBank('dog');
-// console.log(newWordbank.fillBank());
-
-module.exports ={
-  WordBank,
-  wordArr
-}
+module.exports = GameWord;

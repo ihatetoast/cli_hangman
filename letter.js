@@ -3,7 +3,15 @@
 
 function Letter(char) {
   this.char = char;
-  this.blank = '_';
+  this.isLetter = function(char){
+    const letterTest = [/^[A-Za-z]+$/];
+    if(this.char.match(letterTest)){
+      console.log("this is a letter");
+    }
+    else {
+      console.log("this is not ");
+    }
+  },
   this.printLetter = function(char){
     console.log(`printLetter called with char ${char} from ./letter.js`);
   }
