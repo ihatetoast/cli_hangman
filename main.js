@@ -1,3 +1,23 @@
+// NOTES FROM TRAIN:
+// https://www.npmjs.com/package/is-letter
+// $ npm install is-letter (instead of regex)
+// var isLetter = require('is-letter');
+ 
+// isLetter('a'); // => true 
+// isLetter('abba'); // => false 
+//
+	
+// Here is a list of current possibilities:
+
+// 2. (ES6) includes—go to answer, or this answer
+
+// var string = "foo",
+//     substring = "oo";
+// string.includes(substring);
+
+
+
+
 const inquirer = require('inquirer');
 
 const Word = require('./word');
