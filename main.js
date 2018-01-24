@@ -1,52 +1,5 @@
-// NOTES FROM TRAIN:
-// https://www.npmjs.com/package/is-letter
-// $ npm install is-letter (instead of regex)
-// var isLetter = require('is-letter');
- 
-// isLetter('a'); // => true 
-// isLetter('abba'); // => false 
-//
-	
-// Here is a list of current possibilities:
-
-// 2. (ES6) includes—go to answer, or this answer
-
-// var string = "foo",
-//     substring = "oo";
-// string.includes(substring);
-
-
-//NODE MODULES 
-const fs = require('fs');
-//3rd PARTY MODULES
 const inquirer = require('inquirer');
-const request = require('request');
-const _ = require('lodash');
 
-//OWN MODULES
-const Hangman = require('./hangman');
-
-//topics globally as used in diff fcn
-var topics = ["animals", "sports", "literature", "emotions", "food", "programming"];
-
-//function that retrieves many words related to a topic. stores in a text file. write and not append file as i don't want duplicate words
-const getWords = function(){ 
-  topics.forEach(topic => {
-    let bank = []
-    let urlDatamuseApi = `https://api.datamuse.com/words?rel_trg=${topic}`;
-    request(`${urlDatamuseApi}`, function (err, res, body) {
-      if(err) throw err;
-      let bodyJSON = JSON.parse(body);
-      for(i in bodyJSON){
-        bank.push(bodyJSON[i]["word"])
-      }
-       fs.writeFileSync(`${topic}.txt`, bank)
-    });
-  })
-}
-  
-
-//THE MAIN ENTRY TO THE GAME
 'use strict';
 function playGame(){
   getWords();
@@ -78,10 +31,11 @@ function playGame(){
           playGame();
         }, 3000);
         break;
+        //WHERE THE GAME STARTS
       case `Do I ever! Prepared to be smoked.`:
         console.log(`Yeah, good luck with that, ${player}`);
         //ask for a theme
-        askTheme();
+        // askTheme();
         break;
       default:
       console.log("I'm lost. Try again.");
@@ -90,53 +44,5 @@ function playGame(){
 }//end fcn playGame
 
 
-
-//THEMES DETERMINE THE WORDS CHOSEN
-function askTheme(){
-  inquirer
-  .prompt([{
-    type: "list", 
-    name: "themes", 
-    message: "Pick a theme, and I'll find a word that relates to it somehow.",
-    choices: topics
-  }])
-  .then(function(answer){
-    var gameTheme = answer.themes;
-    switch(gameTheme){
-      case "animals":
-        console.log(`expect answer to be animals:  ${gameTheme}`);
-        const Animals = new Hangman("animals");
-        Animals.getWord("animals");
-        break;
-      case "sports":
-      console.log(`expect answer to be sports: ${gameTheme}`);
-        const Sports = new Hangman("sports");
-        Sports.getWord("sports");
-        break;
-      case "literature":
-      console.log(`expect answer to be literature: ${gameTheme}`);
-        const Literature = new Hangman("literature");
-        Literature.getWord("literature");
-        break;
-      case "emotions":
-      console.log(`expect answer to be emotions: ${gameTheme}`);
-        const Emotions = new Hangman("emotions");
-        Emotions.getWord("emotions");
-        break;
-      case "food":
-        console.log(`expect answer to be food: ${gameTheme}`);
-        const Food = new Hangman("food");
-        Food.getWord("food");
-        break;
-      case "programming":
-        console.log(`expect answer to be programming: ${gameTheme}`);
-        const Programming = new Hangman("programming");
-        Programming.getWord("programming");
-        break;
-      default:
-      console.log("ERMAHGERD. MER NERD BERKED.");
-    }
-  })
-}
 
 playGame();

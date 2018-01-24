@@ -2,9 +2,10 @@
 
 npm packages: 
 
-* Request
 * Lodash
 * Inquirer
+* Is-letter
+* Request (used to get words for game creation, not as part of the game)
 
 
 

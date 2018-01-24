@@ -1,27 +1,76 @@
 // Word: Used to create an object representing the current word the user is attempting to guess. This should contain word specific logic and data.
+//needs the letter constructor
+const Letter = require('./letter');
 
-
-function Word(word){
+const Word = function(word){
   this.word = word;
-  console.log(`this is the word const and this is the word: ${word}`);
-  
-  this.makeDashes = function(word){
-    let wordDashes = ''
-    for(var l = 0; l < this.word.length; l++){
-      wordDashes += "- ";
+  //what word becomes when it's prepped for the game. solid word string to an array of new Letters
+  this.preppedWord = [];
+  //store to avoid repeats
+  this.guesses = [];
+  this.won = false;
+  //prepare the word (as in applying Letter const which deals only with letters to blanks and checks for appearance in word. that is Letter only. )
+  this.prepareWord = function(){
+    //loop over word to instantiate a Letter for every letter
+    for(let l = 0; l<this.word.length; l++){
+      var newGameLtr = new Letter(this.word[l]);
+      // console.log(newGameLtr);
+      this.preppedWord.push(newGameLtr);
     }
-    console.log(wordDashes);
   };
-  this.checkLetter = function(ltr, word){
-    if(word.indexOf(ltr) !== -1){
-      console.log(`${ltr} is in ${word}`);
-      
-    } 
-    else {
-      console.log(`${ltr} is NOT in ${word}`);
+  this.prepareWord();//call it now. don't ask
+
+  //need a method to iterate over word
+  this.checkLetter = function(){
+    //loop over word
+    for(let l = 0; l < this.word.length; l++){
+      if(this.word.charAt(l) !==)
     }
+
   }
 }
-const Apple = new Word("apple");
-console.log(Apple.checkLetter('b', 'apple'));
-// module.exports = Word;
+const apple = new Word("apple");
+
+console.log(apple.word);
+apple.prepareWord('apple');
+console.log(apple.preppedWord);
+
+//export to be used in Game
+module.exports = Word;
+
+
+/**
+ * apple.prepareWord('apple');
+ returned:
+  Letter {
+  current: '_ ',
+  wordsLetters: 'a',
+  display: false,
+  letterMatch: [Function],
+  displayLetter: [Function] }
+Letter {
+  current: '_ ',
+  wordsLetters: 'p',
+  display: false,
+  letterMatch: [Function],
+  displayLetter: [Function] }
+Letter {
+  current: '_ ',
+  wordsLetters: 'p',
+  display: false,
+  letterMatch: [Function],
+  displayLetter: [Function] }
+Letter {
+  current: '_ ',
+  wordsLetters: 'l',
+  display: false,
+  letterMatch: [Function],
+  displayLetter: [Function] }
+Letter {
+  current: '_ ',
+  wordsLetters: 'e',
+  display: false,
+  letterMatch: [Function],
+  displayLetter: [Function] }
+ * 
+ */

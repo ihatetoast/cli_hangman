@@ -2,21 +2,38 @@
 //store the letter guessed. letter guessed is new Letter
 //default appearance in word is false. Will change to true if letter guessed is in word
 
-const isLetter = require('is-letter');
-
-const Letter = function(ltr){
-  this.ltr = ltr;  
-  this.isLetter = function(ltr){
-    if(!isLetter(ltr)){
-      console.log(`${ltr} is NOT a letter.`);
-      return false
+const Letter = function(letters){
+  //what the letter is right now
+  this.current ='_ ';
+  //the letterword passed in
+  this.wordsLetters = letters;  
+  this.display = false;
+  this.letterMatch = function(ltr){
+    if(this.wordsLetters === ltr){
+      //if true, set current to be the
+      this.current = this.wordsLetters;
+      return true;
     }
-    else{
-      console.log(`${ltr} is a letter.`);
+    else {
+      return false;
     }
-  } 
+  };
+  this.displayLetter = function(){
+    //return the current (- or ltr)
+    return this.current;
+  }
   
 }
-const userGuess = new Letter();
-userGuess.isLetter('5');
-// module.exports = Letter;
+/*
+let a = new Letter('a');
+console.log("letter player gave is ", a.wordsLetters);
+console.log("as is, the letter displays as ", a.displayLetter());
+//compare a to a
+console.log(a.letterMatch("a"));
+console.log("as is, the letter displays as ", a.displayLetter(), `and I expect to see a: ${a.current}`);
+//compare a to z
+console.log(a.letterMatch("z"));
+console.log("as is, the letter displays as ", a.displayLetter(), `and I expect to see underscore:  ${a.current}`);
+*/
+
+module.exports = Letter;
