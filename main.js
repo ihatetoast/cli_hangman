@@ -33,30 +33,45 @@ function playGame(){
       type: "list",
       name: "playgame",
       message: "Do you want to play hangman?",
-      choices: ["Nah. I'd rather chew glass.", "Not now. Ask me later.", "Do I ever! I'm the best at this game. Prepared to be smoked"]
+      choices: ["Nah. I'd rather chew glass.", "Not now. Ask me later.", "Do I ever! Prepared to be smoked."]
     }] 
   )
-  .then (function (answer){
-    if(answer.playgame === choices[0]){
-      console.log(`I get it, ${answer.player}. I'm not into old west justice, either.`);
-    }
-    else if(answer.playGame === choices[1]){
-      console.log(`I understand, ${answer.player}.`);
-      setTimeout(()=>{
-        console.log("How about now?");
-        playGame();
-      }, 2000);
-    }
-    else{
-      console.log(`Ah, you're the best, ${answer.player}.`);
+  .then (function (answers){
+    var ans = answers.playgame;
+    var player = answers.player;
+    switch(ans){
+      case "Nah. I'd rather chew glass.":
+        console.log(`Oh, ${player}. I get it.`);
+        break;
+      case "Not now. Ask me later.":
+        console.log(`No sweat, ${player}. I can wait.`);
+        setTimeout(()=>{
+          console.log("How about now?");
+          playGame();
+        }, 3000);
+        break;
+      case `Do I ever! Prepared to be smoked.`:
+        console.log(`Yeah, good luck with that, ${player}`);
+        askTheme();
+        break;
+      default:
+      console.log("I'm lost. Try again.");
     }
   })
-  }
+}//end fcn playGame
+
+function askTheme(){
+  inquirer
+  .prompt([{
+    type: "list", 
+    name: "themes", 
+    message: "Pick a theme, and I'll find a word that relates to it somehow.",
+    choices: ["animals", "sports", "literature", "history"]
+  }])
   .then(function(answer){
-    
-}; //end fcn playGame
+    console.log(`You\'ve chosen ${answer.themes}`);
+    // const GameWord = new GameWord(answer.themes)
+  })
+}
 
 playGame();
-
-// console.log(z.printLetter('z'));
-// console.log(`game word array is ${Gameword.wordArr}`);

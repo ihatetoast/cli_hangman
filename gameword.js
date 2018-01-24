@@ -1,48 +1,31 @@
 const request = require('request');
+const _ = require('lodash');
 
-var theme;
-const GameWord = function(){
-//to become method to get theme
-  this.getTheme = function(){
-    inquirer
-      .prompt(
-        {
-          type: 'list',
-          name: 'theme',
-          message: 'What theme do you want?',
-          choices: wordArr,
-          filter: function(val) {
-            return val.toLowerCase();
-          }
-        }
-      )
-      .then(function(answer){
-        theme = answer.theme;
-        console.log(`returned theme is ${theme}`);
-      })
-  },
-  this.fillBank = function(theme){
-    console.log("got this far");
-    this.theme = theme;
-    var bank = []
-    var urlDatamuseApi = `https://api.datamuse.com/words?rel_trg=${this.theme}`
+const GameWord = function(theme){ 
+  this.theme = theme;
+  var bank = [];
+  this.fillBank = function(){
+
+    var urlDatamuseApi = `https://api.datamuse.com/words?rel_trg=${this.theme}`;
     request(`${urlDatamuseApi}`, function (err, res, body) {
       if(err) throw err;
-      let bodyJSON = JSON.parse(body);//because body is a string
-      console.log(`bodyJSON is type of ${typeof bodyJSON}`);
+      let bodyJSON = JSON.parse(body);
       for(i in bodyJSON){
-        console.log("damn word: ",bodyJSON[i]["word"])
         bank.push(bodyJSON[i]["word"])
       }
       let keys = Object.keys(bodyJSON);
-      wordBankLength = `length of bank is ${keys.length}`;
-      console.log(keys.length );
-      
+      const wordbankLength = keys.length;
+      //want to build out game and then return to deal with this promise other than the set timeout hack
       setTimeout(()=>{
-        console.log(`bank is ${bank}`);
-      }, 1500);
+        // console.log(`bank is ${bank} and length is ${bank.length}`);
+        //use lodash for random word
+        const thisGameWord = _.sample(bank);
+        // console.log(`game word is ${thisGameWord}`);
+        return thisGameWord
+      }, 1000);
     });
   }
 }
-
-module.exports = GameWord;
+var apples = new GameWord('animals');
+console.log(apples.fillBank());
+// module.exports = GameWord;
