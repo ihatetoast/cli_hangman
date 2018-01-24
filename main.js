@@ -16,13 +16,41 @@
 // string.includes(substring);
 
 
-
-
+//NODE MODULES 
+const fs = require('fs');
+//3rd PARTY MODULES
 const inquirer = require('inquirer');
+const request = require('request');
+const _ = require('lodash');
 
-//do you want to play a game
+//OWN MODULES
+const Hangman = require('./hangman');
+
+//topics globally as used in diff fcn
+var topics = ["animals", "sports", "literature", "emotions", "food", "programming"];
+
+//function that retrieves many words related to a topic. stores in a text file. write and not append file as i don't want duplicate words
+const getWords = function(){ 
+  topics.forEach(topic => {
+    let bank = []
+    let urlDatamuseApi = `https://api.datamuse.com/words?rel_trg=${topic}`;
+    request(`${urlDatamuseApi}`, function (err, res, body) {
+      if(err) throw err;
+      let bodyJSON = JSON.parse(body);
+      for(i in bodyJSON){
+        bank.push(bodyJSON[i]["word"])
+      }
+       fs.writeFileSync(`${topic}.txt`, bank)
+    });
+  })
+}
+  
+
+//THE MAIN ENTRY TO THE GAME
 'use strict';
 function playGame(){
+  getWords();
+  //ask if they want to play
   inquirer
   .prompt(
     [{
@@ -52,6 +80,7 @@ function playGame(){
         break;
       case `Do I ever! Prepared to be smoked.`:
         console.log(`Yeah, good luck with that, ${player}`);
+        //ask for a theme
         askTheme();
         break;
       default:
@@ -60,17 +89,53 @@ function playGame(){
   })
 }//end fcn playGame
 
+
+
+//THEMES DETERMINE THE WORDS CHOSEN
 function askTheme(){
   inquirer
   .prompt([{
     type: "list", 
     name: "themes", 
     message: "Pick a theme, and I'll find a word that relates to it somehow.",
-    choices: ["animals", "sports", "literature", "history"]
+    choices: topics
   }])
   .then(function(answer){
-    console.log(`You\'ve chosen ${answer.themes}`);
-    // const GameWord = new GameWord(answer.themes)
+    var gameTheme = answer.themes;
+    switch(gameTheme){
+      case "animals":
+        console.log(`expect answer to be animals:  ${gameTheme}`);
+        const Animals = new Hangman("animals");
+        Animals.getWord("animals");
+        break;
+      case "sports":
+      console.log(`expect answer to be sports: ${gameTheme}`);
+        const Sports = new Hangman("sports");
+        Sports.getWord("sports");
+        break;
+      case "literature":
+      console.log(`expect answer to be literature: ${gameTheme}`);
+        const Literature = new Hangman("literature");
+        Literature.getWord("literature");
+        break;
+      case "emotions":
+      console.log(`expect answer to be emotions: ${gameTheme}`);
+        const Emotions = new Hangman("emotions");
+        Emotions.getWord("emotions");
+        break;
+      case "food":
+        console.log(`expect answer to be food: ${gameTheme}`);
+        const Food = new Hangman("food");
+        Food.getWord("food");
+        break;
+      case "programming":
+        console.log(`expect answer to be programming: ${gameTheme}`);
+        const Programming = new Hangman("programming");
+        Programming.getWord("programming");
+        break;
+      default:
+      console.log("ERMAHGERD. MER NERD BERKED.");
+    }
   })
 }
 

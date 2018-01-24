@@ -2,27 +2,21 @@
 //store the letter guessed. letter guessed is new Letter
 //default appearance in word is false. Will change to true if letter guessed is in word
 
-function Letter(char) {
-  this.char = char;
-  this.inWord = false;
-  this.showLetter = function(){
-   if(this.char === '-'){
-     //deal with hyphens and phrases. 
-     this.inWord = true;
-     return '-';
-   } 
-   else if(this.char === ' '){
-    this.inWord = true;
-    return '-';
-   } else if (this.inWord === true){
-    return this.char
-   }
-   else {
-     //it's a bad guess
-     return ' _ '
-   }
-  }
+const isLetter = require('is-letter');
 
+const Letter = function(ltr){
+  this.ltr = ltr;  
+  this.isLetter = function(ltr){
+    if(!isLetter(ltr)){
+      console.log(`${ltr} is NOT a letter.`);
+      return false
+    }
+    else{
+      console.log(`${ltr} is a letter.`);
+    }
+  } 
+  
 }
-
-module.exports = Letter;
+const userGuess = new Letter();
+userGuess.isLetter('5');
+// module.exports = Letter;
