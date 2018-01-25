@@ -14,90 +14,23 @@ let wordToGuess = null;
 let wins = 0;
 let losses = 0;
 let chances = 10;
-let player = 'Eddy Mologie';
+let player;
 //save word as obj for tru and plhldr
 let word = { }
 let gameLetters = {}
 
-const addSpaces = function(){
-  console.log("\n\n");
-}
+
   
 //retrieves words and picks one at random from txt files
   
-const inviteToPlay = function(){
-    inquirer
-    .prompt(
-      [{
-        name: "player",
-        message: "What is your name? \n",
-      },
-        {
-        type: "list",
-        name: "playgame",
-        message: "\n\nDo you want to play hangman?",
-        choices: ["Nah. I'd rather chew glass.", "Not now. Ask me later.", "Do I ever! Prepared to be smoked."]
-      }] 
-    )
-    .then (function (answers){
-      var ans = answers.playgame;
-      player = answers.player;
-      switch(ans){
-        case "Nah. I'd rather chew glass.":
-          addSpaces();
-          console.log(`Oh, ${player}. I get it.`);
-          break;
-        case "Not now. Ask me later.":
-          addSpaces();
-          console.log(`No sweat, ${player}. I can wait.`);
-          setTimeout(()=>{
-            addSpaces();
-            console.log("How about now?");
-            addSpaces();
-            playGame();
-          }, 3000);
-          break;
-          //WHERE THE GAME STARTS
-        case `Do I ever! Prepared to be smoked.`:
-          addSpaces();
-          console.log(`Yeah, good luck with that, ${player}`);
-          playGame()
-          break;
-        default:
-        console.log("I'm lost. Try again.");
-      }
-    })
-  }
 
-const userPlays = function(){ 
-  console.log(`userPlays called. word to guess is ${wordToGuess}`);
-  console.log(`You have ${chances} chances remaining.`);
-  addSpaces();
-  inquirer
-    .prompt([
-      { 
-        type: "list",
-        name: "taketurn",
-        message: "Think of a letter. \n",
-        choices: ["Ok!", "No. I'm over it."]
-      }
-    ])
-    .then(function(ans){
-      addSpaces();
-      if(ans.taketurn !== "Ok!"){
-        addSpaces();
-        console.log(`I'm sorry to see you go, ${player}. Enter "npm start" to play again.`);
-        setTimeout(()=>{
-          console.clear();
-        }, 2000);
-      }
-      else {
-        addSpaces();
-        getLetter();
-      }
-    })
-}
+
+//USER PLAYS A LETTER (called within playGame)
+//inside userPlays, getLetter is called
+//asks user for a letter input
 const getLetter = function(){
+  console.log(`You have ${chances - gameLetters.badGuesses.length} chances remaining.`);
+  console.log("Game (in getLetter):", gameLetters.placeHolders.join(' '));
   inquirer
   .prompt([
     {
@@ -115,30 +48,111 @@ const getLetter = function(){
     }
   ])
   .then(function(answer){
-    let turn = gameLetters.inWord(answer.letter);
+    console.log("game:", gameLetters.placeHolders.join(' '));
+    addSpaces();  
+    console.log("is guess in word?");
+    gameLetters.inWord(answer.letter);
+    // console.log("blanks from Letter const");
+    gameLetters.showLetter(answer.letter);
+   
     setTimeout(()=>{
-      userPlays()
+      userPlays();
     }, 1000);
+    
   })
 }
 
-//set up. once set up, start asking
+//USER PLAYS A LETTER (called within playGame)
+//inside userPlays, getLetter is called
+//asks user for play continuation or lets them quit
+const userPlays = function(){ 
+  addSpaces();
+  inquirer
+    .prompt([
+      { 
+        type: "list",
+        name: "taketurn",
+        message: "Think of a letter. \n",
+        choices: ["Ok!", "No. I'm over it."]
+      }
+    ])
+    .then(function(ans){
+      if(ans.taketurn !== "Ok!"){
+        console.log(`I'm sorry to see you go, ${player}. Enter "npm start" to play again.`);
+        setTimeout(()=>{
+          console.clear();
+        }, 500);
+      }
+      else {
+        getLetter();
+      }
+    })
+}
+
+//PLAYS THE GAME (called within inviteToPlay)
+//instantiates the word
+//inside playGame, userPlays is called
 const playGame = function(){
-  //deal with the word const
-  //instantiate
   word = new Word();
-  //get that random word
   wordToGuess = word.randomWord;
-  // console.log(`the word for this game: ${wordToGuess}`);
-  // console.log("playgame was called");
-  //deal with the letters from wordtoguess
   gameLetters = new Letter(wordToGuess);
+  console.log(`word to guess: ${wordToGuess}`);
   gameLetters.fillArrays();
-  //start taking input from user. userplays deals with the turns/chances
   console.log(`Oh, ${player}, I am not sure you will get this one.`);
   setTimeout(()=>{
     userPlays()
   }, 1500);
+} //ends playGame
+
+//INVITES PLAYER TO PLAY. CALLED FIRST.
+//inside inviteToPlay, playGame is called
+const inviteToPlay = function(){
+  inquirer
+  .prompt(
+    [{
+      name: "player",
+      message: "What is your name? \n",
+    },
+      {
+      type: "list",
+      name: "playgame",
+      message: "\n\nDo you want to play hangman?",
+      choices: ["Do I ever! Prepared to be smoked.", "Nah. I'd rather chew glass.", "Not now. Ask me later.", ]
+    }] 
+  )
+  .then (function (answers){
+    var ans = answers.playgame;
+    player = answers.player || "Sparkle Bunny";
+    switch(ans){
+      case "Nah. I'd rather chew glass.":
+        addSpaces();
+        console.log(`Oh, ${player}. I get it.`);
+        break;
+      case "Not now. Ask me later.":
+        addSpaces();
+        console.log(`No sweat, ${player}. I can wait.`);
+        setTimeout(()=>{
+          addSpaces();
+          console.log("How about now?");
+          addSpaces();
+          playGame();
+        }, 3000);
+        break;
+        //WHERE THE GAME STARTS
+      case `Do I ever! Prepared to be smoked.`:
+        addSpaces();
+        console.log(`Yeah, good luck with that, ${player}`);
+        playGame()
+        break;
+      default:
+      console.log("I'm lost. Try again.");
+    }
+  })
+} //ends invite play
+
+//helper function to just add empty lines for spacing
+const addSpaces = function(){
+  console.log("\n\n");
 }
 
 inviteToPlay();
