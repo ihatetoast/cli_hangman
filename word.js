@@ -14,23 +14,9 @@ const foodArray = options.food;
 let wordsArray = [...animalArray, ...sportsArray, ...emotionsArray, ...literatureArray, ...foodArray];
 
 const Word = function(){
-  this.word  = _.sample(wordsArray);
-  this.preppedWord = [];
-  this.prepareWord = function(){
-    //loop over word to instantiate a Letter for every letter
-    for(let l = 0; l<this.word.length; l++){
-      var newGameLtr = new Letter(this.word[l]);
-      // console.log(newGameLtr);
-      this.preppedWord.push(newGameLtr);
-    }
-  };
-  this.prepareWord()
+  this.wordsArray = [...animalArray, ...sportsArray, ...emotionsArray, ...literatureArray, ...foodArray];
+  this.randomWord  = _.sample(this.wordsArray);  
 }
 
-const gameword = new Word(this.word);
-
-console.log(gameword.word);
-gameword.prepareWord();
-console.log(typeof gameword.preppedWord);
 
 module.exports = Word;
