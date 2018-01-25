@@ -2,16 +2,16 @@
 //store the letter guessed. letter guessed is new Letter
 //default appearance in word is false. Will change to true if letter guessed is in word
 
-const Letter = function(letter){
-  //(placeholder)
+const Letter = function(letters){
+  //what the letter is right now
   this.current ='_ ';
-  //(the underlying char)
-  this.trueLetter = letter;  
-
-  this.letterMatch = function(userLtr){
-    if(this.trueLetter === userLtr){
+  //the letterword passed in
+  this.wordsLetters = letters;  
+  this.display = false;
+  this.letterMatch = function(ltr){
+    if(this.wordsLetters === ltr){
       //if true, set current to be the
-      this.current = this.trueLetter;
+      this.current = this.wordsLetters;
       return true;
     }
     else {
@@ -19,7 +19,7 @@ const Letter = function(letter){
     }
   };
   this.displayLetter = function(){
-    //return placeholder or letter
+    //return the current (- or ltr)
     return this.current;
   }
   

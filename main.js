@@ -1,8 +1,10 @@
+
 const inquirer = require('inquirer');
+const Game = require('./game');
+
 
 'use strict';
-function playGame(){
-  getWords();
+function gameIntro(){
   //ask if they want to play
   inquirer
   .prompt(
@@ -28,14 +30,14 @@ function playGame(){
         console.log(`No sweat, ${player}. I can wait.`);
         setTimeout(()=>{
           console.log("How about now?");
-          playGame();
+          gameIntro();
         }, 3000);
         break;
         //WHERE THE GAME STARTS
       case `Do I ever! Prepared to be smoked.`:
         console.log(`Yeah, good luck with that, ${player}`);
-        //ask for a theme
-        // askTheme();
+        //I want to play the game here
+        Game.initializeGame();
         break;
       default:
       console.log("I'm lost. Try again.");
@@ -45,4 +47,4 @@ function playGame(){
 
 
 
-playGame();
+gameIntro();
