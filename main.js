@@ -11,8 +11,6 @@ console.log(`CLIngman: Like Hangman but without the draconian reaction to guessi
 
 //variables:
 let wordToGuess = null;
-let wins = 0;
-let losses = 0;
 let chances = 10;
 let player;
 //save word as obj for tru and plhldr
@@ -23,19 +21,41 @@ let gameLetters = {}
   
 //retrieves words and picks one at random from txt files
   
+//CHECKS TO SEE IF GAME IS OVER
+//
+
+const checkWinLoss = function(){
+  if(gameLetters.badGuesses.length === 10){
+    console.log(`
+      I'm sorry, ${player}, but you lost.
+    `);
+    inviteToPlay();
+    return;
+  } else if(gameLetters.placeHolders.indexOf('_ ') === -1){
+    console.log(`
+      Congrats, ${player}! You won.
+    `);
+    inviteToPlay();
+    return;
+  } else{
+    userPlays();
+  }
+}
+
 
 
 //USER PLAYS A LETTER (called within playGame)
 //inside userPlays, getLetter is called
 //asks user for a letter input
 const getLetter = function(){
+  addSpaces()
   console.log(`You have ${chances - gameLetters.badGuesses.length} chances remaining.`);
-  console.log("Game (in getLetter):", gameLetters.placeHolders.join(' '));
+  console.log("Game:", gameLetters.placeHolders.join(' '));
   inquirer
   .prompt([
     {
       name: 'letter',
-      message: `Give me a letter, ${player}`,
+      message: `Guess a letter, ${player}`,
       filter: function(input){
         return input.toLowerCase();
       },
@@ -48,21 +68,15 @@ const getLetter = function(){
     }
   ])
   .then(function(answer){
-    console.log("game:", gameLetters.placeHolders.join(' '));
     addSpaces();  
-    console.log("is guess in word?");
     gameLetters.inWord(answer.letter);
-    // console.log("blanks from Letter const");
     gameLetters.showLetter(answer.letter);
-   
-    setTimeout(()=>{
-      userPlays();
-    }, 1000);
+    checkWinLoss();
     
   })
 }
 
-//USER PLAYS A LETTER (called within playGame)
+//USER PLAYS  (called within playGame)
 //inside userPlays, getLetter is called
 //asks user for play continuation or lets them quit
 const userPlays = function(){ 
@@ -72,20 +86,39 @@ const userPlays = function(){
       { 
         type: "list",
         name: "taketurn",
-        message: "Think of a letter. \n",
-        choices: ["Ok!", "No. I'm over it."]
+        message: "What do you want to do: guess a letter, solve the word, or quit?",
+        choices: ["Guess a letter!", "Guess the Word.", "Quit."]
       }
     ])
     .then(function(ans){
-      if(ans.taketurn !== "Ok!"){
+      if(ans.taketurn === "Guess the Word."){
+        inquirer
+        .prompt([
+          {
+          name: "wholeword",
+          message: "Ok, what is the word?",
+          filter: function(val){
+            return val.toLowerCase();
+          }
+        }])
+        .then(function(answer){
+          if(answer.wholeword ===wordToGuess){
+            console.log(`Huzzah, ${player}!`);
+            inviteToPlay();
+          } else{
+            console.log(`Wrongo, ${player}-o! You lost. Instant death. Should have thought about that.`);
+            inviteToPlay();
+          }
+        })//ends Guess the Word
+      } else if(ans.taketurn === "Guess a letter!"){
+        getLetter();
+      }else {
         console.log(`I'm sorry to see you go, ${player}. Enter "npm start" to play again.`);
         setTimeout(()=>{
           console.clear();
         }, 500);
       }
-      else {
-        getLetter();
-      }
+
     })
 }
 
@@ -98,10 +131,7 @@ const playGame = function(){
   gameLetters = new Letter(wordToGuess);
   console.log(`word to guess: ${wordToGuess}`);
   gameLetters.fillArrays();
-  console.log(`Oh, ${player}, I am not sure you will get this one.`);
-  setTimeout(()=>{
-    userPlays()
-  }, 1500);
+  checkWinLoss();
 } //ends playGame
 
 //INVITES PLAYER TO PLAY. CALLED FIRST.

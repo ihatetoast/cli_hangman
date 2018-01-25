@@ -29,16 +29,12 @@ const Letter = function(gameword){
 //show the letter if inWord is true
 Letter.prototype.inWord = function(guess){
   if(this.trueLetters.indexOf(guess) !== -1){
-    console.log(`${_.sample(posSledge)}`);
+    console.log(`${_.sample(posSledge)}\n`);
     this.goodGuesses.push(guess);
-    // console.log(`this.goodGuesses:  ${this.goodGuesses}`);
-    // console.log(`this.goodGuesses.length:  ${this.goodGuesses.length}`);
   }
   else{
-    console.log(`${guess} is NOT in the word${_.sample(negSledge)}`);
+    console.log(`${guess} is NOT in the word${_.sample(negSledge)}\n`);
     this.badGuesses.push(guess);
-    // console.log(`this.badGuesses:  ${this.badGuesses}`);
-    // console.log(`this.badGuesses.length:  ${this.badGuesses.length}`);
   }
 }
 Letter.prototype.showLetter = function(guess){
