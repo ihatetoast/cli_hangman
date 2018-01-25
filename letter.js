@@ -6,32 +6,52 @@ const Letter = function(gameword){
   //arrays to hold
   this.trueLetters = [];
   this.placeHolders = []; 
-  //handle spaces and character not letters (if i have hyphens or phrases)
-  this.isALetter = function (char){
-    if(isLetter(char)){
-      return true;
-    }
-    else{
-      return false;
-    }
-  };//end validator (could put on inquirer)
   //fill the arrays above
   this.fillArrays= function(){
-    const gamewordArr = gameword.split('');
-    console.log(`gamewordArr is ${gamewordArr}`);
+    this.trueLetters = gameword.split('');
+    this.placeHolders = this.trueLetters.map((idx) =>{
+      return '_ ';
+    });
+    console.log(`trueLetters is ${this.trueLetters}`);
+    // console.log(`${placeHolders.join(' ')}`);
     // gameword.forEach(ltr, idx)
+
   }
 }
-let a = new Letter('a');
-let aa = new Letter('aa')
-let nine = new Letter(9);
-let nineStr = new Letter('9');
 
-//hackey tests
-// console.log(`a.current expects to be _: ${a.current}`);
-// console.log(`a.trueLetter expects to be a: ${a.trueLetter}`);
-// console.log(`a.isALetter expects to be true: ${a.isALetter('a')}`);
-// console.log(`aa.isALetter expects to be false: ${aa.isALetter('aa')}`);
-// console.log(`nine.isALetter expects to be false: ${nine.isALetter(9)}`);
-// console.log(`nineStr.isALetter expects to be false: ${a.isALetter('9')}`);
+//DEAL WITH THE LETTERS WITH PROTOTYPES
+//is the letter in the word?
+//show the letter if inWord is true
+Letter.prototype.inWord = function(guess){
+  //iterate over trueLetters. if guess is the ltr, replace DASH with letter at index.
+  this.trueLetters.forEach((ltr, idx, arr) =>{
+    if(guess === ltr){
+      this.placeHolders[idx] = guess; 
+      return true;
+    }
+    else {
+      return false;
+    }
+  })
+  console.log(this.placeHolders.join(' '));
+}
+//show - 
+
+/*
+hackey tests
+let monkey = new Letter("monkey");
+monkey.fillArrays();
+console.log(monkey.trueLetters);
+console.log(monkey.placeHolders);
+monkey.inWord("o");
+
+let mississippi = new Letter("mississippi");
+mississippi.fillArrays();
+console.log(mississippi.trueLetters);
+console.log(mississippi.placeHolders);
+mississippi.inWord("s");
+mississippi.inWord("i");
+*/
+
+
 module.exports = Letter;
