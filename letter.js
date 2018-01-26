@@ -11,19 +11,15 @@ const Letter = function(gameword){
   this.placeHolders = [];
   this.badGuesses = [];
   this.goodGuesses = [];
-  //fill the arrays above
+
   this.fillArrays= function(){
     this.trueLetters = gameword.split('');
     this.placeHolders = this.trueLetters.map((idx) =>{
       return '_ ';
     });
-    // console.log(`${placeHolders.join(' ')}`);
-    // gameword.forEach(ltr, idx)
-
   }
 }
-// console.log(this.placeHolders.join(' '));
-//     console.log(`trueLetters is ${this.trueLetters}`);
+
 //DEAL WITH THE LETTERS WITH PROTOTYPES
 //is the letter in the word?
 //show the letter if inWord is true
@@ -46,7 +42,6 @@ Letter.prototype.showLetter = function(guess){
   });
   console.log(this.placeHolders.join(' '));
 }
-//show - 
 
 /*
 hackey tests

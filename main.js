@@ -1,4 +1,3 @@
-
 const inquirer = require('inquirer');
 
 const isLetter = require('is-letter');
@@ -6,8 +5,8 @@ const isLetter = require('is-letter');
 const Word = require('./word');
 const Letter = require('./letter');
 
-
-console.log(`CLIngman: Like Hangman but without the draconian reaction to guessing incorrectly.`);
+console.log(`
+CLIngman: Hangman on the CLI.`);
 
 //variables:
 let wordToGuess = null;
@@ -17,12 +16,7 @@ let player;
 let word = { }
 let gameLetters = {}
 
-
-  
-//retrieves words and picks one at random from txt files
-  
 //CHECKS TO SEE IF GAME IS OVER
-//
 
 const checkWinLoss = function(){
   if(gameLetters.badGuesses.length === 10){
@@ -43,13 +37,11 @@ const checkWinLoss = function(){
 }
 
 
-
 //USER PLAYS A LETTER (called within playGame)
 //inside userPlays, getLetter is called
 //asks user for a letter input
 const getLetter = function(){
   addSpaces()
-  console.log(`You have ${chances - gameLetters.badGuesses.length} chances remaining.`);
   console.log("Game:", gameLetters.placeHolders.join(' '));
   inquirer
   .prompt([
@@ -62,6 +54,8 @@ const getLetter = function(){
       validate: function(input){
         if(!isLetter(input)){
           return 'Please enter a letter.'
+        } else if((gameLetters.goodGuesses.indexOf(input) !== -1) || (gameLetters.badGuesses.indexOf(input) !== -1)){
+          return `You\'ve already guessed ${input}.`
         }
         return true;
       }
@@ -81,6 +75,7 @@ const getLetter = function(){
 //asks user for play continuation or lets them quit
 const userPlays = function(){ 
   addSpaces();
+  console.log(`Bad guesses remaining: ${chances - gameLetters.badGuesses.length}`);
   inquirer
     .prompt([
       { 
@@ -118,7 +113,6 @@ const userPlays = function(){
           console.clear();
         }, 500);
       }
-
     })
 }
 
@@ -129,7 +123,7 @@ const playGame = function(){
   word = new Word();
   wordToGuess = word.randomWord;
   gameLetters = new Letter(wordToGuess);
-  console.log(`word to guess: ${wordToGuess}`);
+  console.log(`Word to solve (for demo only): ${wordToGuess}`);
   gameLetters.fillArrays();
   checkWinLoss();
 } //ends playGame
@@ -141,7 +135,7 @@ const inviteToPlay = function(){
   .prompt(
     [{
       name: "player",
-      message: "What is your name? \n",
+      message: "What is your name?",
     },
       {
       type: "list",
@@ -162,9 +156,7 @@ const inviteToPlay = function(){
         addSpaces();
         console.log(`No sweat, ${player}. I can wait.`);
         setTimeout(()=>{
-          addSpaces();
           console.log("How about now?");
-          addSpaces();
           playGame();
         }, 3000);
         break;
@@ -182,7 +174,7 @@ const inviteToPlay = function(){
 
 //helper function to just add empty lines for spacing
 const addSpaces = function(){
-  console.log("\n\n");
+  console.log("\n");
 }
 
 inviteToPlay();
