@@ -14,7 +14,7 @@ const Letter = function(gameword){
 
   this.fillArrays= function(){
     this.trueLetters = gameword.split('');
-    this.placeHolders = this.trueLetters.map((idx) =>{
+    this.placeHolders = this.trueLetters.map( (idx) =>{
       return '_ ';
     });
   }
@@ -58,6 +58,7 @@ console.log(mississippi.placeHolders);
 mississippi.inWord("s");
 mississippi.inWord("i");
 */
+
 
 
 module.exports = Letter;

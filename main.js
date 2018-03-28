@@ -13,8 +13,8 @@ let wordToGuess = null;
 let chances = 10;
 let player;
 //save word as obj for tru and plhldr
-let word = { }
-let gameLetters = {}
+let word = {};
+let gameLetters = {};
 
 //CHECKS TO SEE IF GAME IS OVER
 
@@ -32,6 +32,7 @@ const checkWinLoss = function(){
     inviteToPlay();
     return;
   } else{
+    console.log(`Bad guesses remaining: ${chances - gameLetters.badGuesses.length}`);
     userPlays();
   }
 }
@@ -75,7 +76,7 @@ const getLetter = function(){
 //asks user for play continuation or lets them quit
 const userPlays = function(){ 
   addSpaces();
-  console.log(`Bad guesses remaining: ${chances - gameLetters.badGuesses.length}`);
+  
   inquirer
     .prompt([
       { 
@@ -123,7 +124,8 @@ const playGame = function(){
   word = new Word();
   wordToGuess = word.randomWord;
   gameLetters = new Letter(wordToGuess);
-  console.log(`Word to solve (for demo only): ${wordToGuess}`);
+  // console.log(`Word to solve (for demo only): ${wordToGuess}`);
+
   gameLetters.fillArrays();
   checkWinLoss();
 } //ends playGame

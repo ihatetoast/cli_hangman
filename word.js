@@ -20,3 +20,4 @@ const Word = function(){
 
 
 module.exports = Word;
+
