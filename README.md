@@ -12,7 +12,7 @@ npm packages used:
 * Request (used to get words for game creation, not as part of the game)
 
 Demo:
-The demo below includes the word to guess logged to the console in order to speed up the guessing demo process.
-[Demo as gif](http://www.ihatetoast.com/projects.html)
+Please note, the demo below includes the word to guess logged to the console in order to speed up the guessing process to keep the demo short.
+![Demo as gif](clingman.gif)
 
 APIs used: [DataMuse](https://api.datamuse.com/api) to help me come up with scores of words in seconds, which allowed me more time for the logic.
