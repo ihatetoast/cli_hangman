@@ -1,7 +1,5 @@
 const inquirer = require('inquirer');
-
 const isLetter = require('is-letter');
-
 const Word = require('./word');
 const Letter = require('./letter');
 
@@ -17,7 +15,6 @@ let word = {};
 let gameLetters = {};
 
 //CHECKS TO SEE IF GAME IS OVER
-
 const checkWinLoss = function(){
   if(gameLetters.badGuesses.length === 10){
     console.log(`

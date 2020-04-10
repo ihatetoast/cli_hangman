@@ -4,7 +4,7 @@ const options = require('./options');
 const Letter = require('./letter');
 
 //just an easier way to find random words. 
-//used an api but only for me, not for the game.
+//used an api (with Request) but only for me, not for the game.
 const animalArray = options.animals;
 const sportsArray = options.sports;
 const emotionsArray = options.emotions;
